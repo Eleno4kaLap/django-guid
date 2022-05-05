@@ -38,6 +38,16 @@ def process_incoming_request(request: 'HttpRequest') -> None:
             integration.run(guid=guid.get())
 
 
+def get_log_message(request, response):
+    """Gets log message about request"""
+    user = getattr(request, 'user', None)
+    user_id = getattr(user, 'pk', None)
+    message = 'method=%s path=%s status=%s' % (request.method, request.path, response.status_code)
+    if user_id:
+        message += ' user=' + str(user_id)
+    return message
+
+
 def process_outgoing_request(response: 'HttpResponse', request: 'HttpRequest') -> None:
     """
     Process an outgoing request. This function is called after the view and before later middleware.
@@ -52,6 +62,14 @@ def process_outgoing_request(response: 'HttpResponse', request: 'HttpRequest') -
         for integration in settings.integrations:
             logger.debug('Running tear down for integration: `%s`', integration.identifier)
             integration.cleanup()
+
+        if settings.log_requests:
+            # Don't log favicon and options requests
+            if 'favicon' in request.path or request.method.upper() == "OPTIONS":
+                return
+
+            logger.info(get_log_message(request, response))
+
 
 
 @sync_and_async_middleware

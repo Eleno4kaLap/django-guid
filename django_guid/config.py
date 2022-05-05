@@ -60,6 +60,10 @@ class Settings:
     def uuid_length(self) -> int:
         return self.settings.get('UUID_LENGTH', 32)
 
+    @property
+    def log_requests(self) -> bool:
+        return self.settings.get('LOG_REQUESTS', False)
+
     def validate(self) -> None:
         if not isinstance(self.validate_guid, bool):
             raise ImproperlyConfigured('VALIDATE_GUID must be a boolean')

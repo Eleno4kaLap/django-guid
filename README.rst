@@ -135,6 +135,7 @@ Package settings are added in your ``settings.py``:
         'INTEGRATIONS': [],
         'IGNORE_URLS': [],
         'UUID_LENGTH': 32,
+        'LOG_REQUESTS': False
     }
 
 
@@ -181,6 +182,11 @@ Package settings are added in your ``settings.py``:
         Lets you optionally trim the length of the package generated UUIDs.
 
     Default: 32
+
+* :code:`LOG_REQUESTS`
+        Ability to log all requests received by the application, including the user ID (if present)
+
+    Default: False
 
 *************
 Configuration

@@ -43,11 +43,11 @@ def get_id_from_header(request: 'HttpRequest') -> str:
     """
     header: str = request.headers.get(settings.guid_header_name)  # Case insensitive headers.get added in Django2.2
     if header:
-        logger.info('%s found in the header', settings.guid_header_name)
+        logger.debug('%s found in the header', settings.guid_header_name)
         request.correlation_id = get_correlation_id_from_header(request)
     else:
         request.correlation_id = generate_guid()
-        logger.info(
+        logger.debug(
             'Header `%s` was not found in the incoming request. Generated new GUID: %s',
             settings.guid_header_name,
             request.correlation_id,
